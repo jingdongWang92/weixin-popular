@@ -44,7 +44,7 @@ public abstract class ResultErrorHandler {
 		return false;
 	}
 	
-	protected void doHandle(String uriId,HttpUriRequest request,Object result){
+	public void doHandle(String uriId,HttpUriRequest request,Object result){
 		if(this.isError(result)){
 			String content = null;
 			if(request instanceof HttpEntityEnclosingRequestBase){

@@ -6,7 +6,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.thoughtworks.xstream.XStream;
+
 import weixin.popular.bean.AdaptorCDATA;
+import weixin.popular.util.XStreamInitializer;
 
 /**
  * 统一支付请求参数
@@ -314,5 +317,11 @@ public class Unifiedorder {
 	public void setSign_type(String sign_type) {
 		this.sign_type = sign_type;
 	}
-
+	
+	 public String toXML() {
+	    XStream xstream = XStreamInitializer.getInstance();
+	    xstream.processAnnotations(this.getClass());
+	    return xstream.toXML(this);
+	  }
+	
 }

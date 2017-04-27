@@ -58,7 +58,6 @@ import weixin.popular.bean.paymch.TransfersResult;
 import weixin.popular.bean.paymch.Unifiedorder;
 import weixin.popular.bean.paymch.UnifiedorderResult;
 import weixin.popular.client.LocalHttpClient;
-import weixin.popular.util.JsonUtil;
 import weixin.popular.util.MapUtil;
 import weixin.popular.util.SignatureUtil;
 import weixin.popular.util.XMLConverUtil;
@@ -114,19 +113,14 @@ public class PayMchAPI extends BaseAPI{
 	 */
 	public static UnifiedorderResult payUnifiedorder(Unifiedorder unifiedorder,String key){
 		Map<String,String> map = MapUtil.objectToMap(unifiedorder);
-		//@since 2.8.7 detail 字段签名处理
-		if(map.containsKey("detail")){
-			map.put("detail",JsonUtil.toJSONString(unifiedorder.getDetail()));
-		}
 		if(key != null){
 			String sign = SignatureUtil.generateSign(map,unifiedorder.getSign_type(),key);
 			unifiedorder.setSign(sign);
 		}
-		String unifiedorderXML = XMLConverUtil.convertToXML(unifiedorder);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(xmlHeader)
 										.setUri(baseURI()+ "/pay/unifiedorder")
-										.setEntity(new StringEntity(unifiedorderXML,Charset.forName("utf-8")))
+										.setEntity(new StringEntity(unifiedorder.toXML(),Charset.forName("utf-8")))
 										.build();
 		return LocalHttpClient.executeXmlResult(httpUriRequest,UnifiedorderResult.class,unifiedorder.getSign_type(),key);
 	}

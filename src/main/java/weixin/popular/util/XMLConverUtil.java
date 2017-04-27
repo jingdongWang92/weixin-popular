@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,8 +25,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.sun.xml.bind.marshaller.CharacterEscapeHandler;
 
 /**
  * XML 数据接收对象转换工具类
@@ -107,12 +104,12 @@ public class XMLConverUtil{
 				JAXBContext jaxbContext = JAXBContext.newInstance(object.getClass());
 				Marshaller marshaller = jaxbContext.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-				//设置CDATA输出字符
-				marshaller.setProperty(CharacterEscapeHandler.class.getName(), new CharacterEscapeHandler() {
-					public void escape(char[] ac, int i, int j, boolean flag, Writer writer) throws IOException {
-						writer.write(ac, i, j);
-					}
-				});
+//				//设置CDATA输出字符
+//				marshaller.setProperty(CharacterEscapeHandler.class.getName(), new CharacterEscapeHandler() {
+//					public void escape(char[] ac, int i, int j, boolean flag, Writer writer) throws IOException {
+//						writer.write(ac, i, j);
+//					}
+//				});
 				mMap.put(object.getClass(), marshaller);
 			}
 			StringWriter stringWriter = new StringWriter();
